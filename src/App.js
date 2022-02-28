@@ -1,5 +1,8 @@
+import "./App.css"
 import {useState,useEffect } from "react";
-import axios from 'axios'
+import axios from 'axios';
+
+
 function App() {
   const [data,setData] = useState({});
   const [range,setRange] = useState({
@@ -14,53 +17,33 @@ function App() {
   },[]) 
 
   const handleChange =(e)=>{
-
-
     const { name, value} = e.target;
-
-
-
     setRange({...range,[name]:value})
   }
-
+  const holidaysStyle = {
+    width:"500px",
+    height:"400px",
+    overflowY: "scroll",
+    scrollbarColor: "rebeccapurple green",
+    scrollbarWidth: "thin",
+    margin:"auto"
+  }
   return (
     <div className="App">
-      <h1>Hello</h1>
+      <h1>Callender</h1>
+      <hr/>
       <div>
+        <h4>Apply Filter</h4>
       From : <input type="date" placeholder="Select date" name="from" onChange={handleChange}/> &nbsp;
       To : <input type="date" placeholder="Select date" name="to" onChange={handleChange}/>
-
+      <hr/>
       </div>
-        <p>{data.division}</p>
-      <div>
+        <h3>Holidays in {data.division}</h3>
+      <div style={holidaysStyle}>
       {
-        data.events?.filter(ele=>{
-          let [fyear, fmonth, fdate] = range.from.split('-').map(Number);
-          let [tyear,tmonth,tdate] = range.from.split('-').map(Number);
-          let [cyear,cmonth,cdate] = ele.date.split('-').map(Number);
+        data.events?.map(ele => <div>
 
-          if(range.from != "" && range.to != ""){
-
-            if(cyear>=fyear && cyear <= tyear){
-               if(cyear>fyear){
-                  return ele
-               }else{
-                  if(cyear<tyear){
-                    return ele;
-                  }else{
-                      if(cmonth>fmonth && cmonth<tmonth) return ele
-                      else  if(cmonth == fmonth && cmonth<tmonth){
-                          
-                      }
-                  }
-               }
-            }
-          }
-
-          else return ele
-        }).map(ele => <div>
-
-          <p>{ele.title} <span>{ele.date}</span></p>
+          <p style={{display:"flex", justifyContent:"space-evenly"}}><span>{ele.date}</span> <span>{ele.title}</span> </p>
         </div>)
       }
       </div>
